@@ -6,11 +6,11 @@ from datetime import date, datetime
 conn_ssh = paramiko.SSHClient()
 conn_ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
-#CREATE LOG FILE
-create_log = open("Logs.txt", "a")
+#Create
+create_log = open("logs.txt", "a")
 
-#READ CSV FILE
-readcsv_file = open("LIST.csv", "r")
+#Read from CSV file
+readcsv_file = open("list-devices.csv", "r")
 listcsv_device = csv.DictReader(readcsv_file, delimiter=",")
 
 for device in listcsv_device:
@@ -22,11 +22,11 @@ for device in listcsv_device:
             port = device['port'] if device['port'] else 22
         )
         print("****************************************************")
-        print(f"Succes login to {device['usernam']}")
+        print(f"Succes login to {device['username']}")
         conn = conn_ssh.invoke_shell()
 
-        conn.send("ip int print")
-        time.sleep(5)
+        conn.send("show ip int br | exclude unass")
+        time.sleep(10)
 
         output = conn.recv(65535).decode()
         file_backup = open(f"backup-config/{device['ip']}.cfg", "w")
@@ -35,17 +35,18 @@ for device in listcsv_device:
 
         conn_ssh.close()
 
-#CREATE ERR EXECPTION
+#Create error exception
     except paramiko.ssh_exception.AuthenticationException as message:
         print(f"{message} [{device['ip']}] ")
         create_log.write(f"{message} {datetime.now()}\n")
+        pass
 
-    except paramiko.ssh_exception.NoValidConnectionsErrot as message:
+    except paramiko.ssh_exception.NoValidConnectionsError as message:
         print(f"{message}")
         create_log.write(f"{message} {datetime.now()}\n")
 
     #DEFAULT EXECEPTION!!!
-    except Exception as message:    
+    except Exception as message:
         print(f"error: {message} [{device['ip']}]")
         create_log.write(f"error, message: {message} {datetime.now()}\n")
 
