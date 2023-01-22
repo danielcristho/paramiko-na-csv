@@ -15,6 +15,7 @@ create_log = open("logs.txt", "a")
 readcsv_file = open("list-devices.csv", "r")
 listcsv_device = csv.DictReader(readcsv_file, delimiter=",")
 
+
 for device in listcsv_device:
     try:
         conn_ssh.connect(
@@ -26,18 +27,18 @@ for device in listcsv_device:
         )
         print("****************************************************")
         print(f"Succes login to {device['username']}")
+
         conn = conn_ssh.invoke_shell()
 
-        conn.send("show ip int br | exclude unass")
+        conn.send("show ip int br | exclude unass\n")
+        conn_ssh.exec_command("ip add pr\n")
         time.sleep(10)
-
         output = conn.recv(65535).decode()
         file_backup = open(f"backup/{device['ip']}.cfg", "w")
         file_backup.write(output)
         file_backup.close()
 
         conn_ssh.close()
-
 #Create error exception
     except paramiko.ssh_exception.AuthenticationException as message:
         print(f"{message} [{device['ip']}] ")
