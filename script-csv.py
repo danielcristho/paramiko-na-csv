@@ -1,15 +1,13 @@
 import paramiko
 import time
 import csv
-import os
-import sys
 from datetime import datetime
 
 conn_ssh = paramiko.SSHClient()
 conn_ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
 #Create script log
-create_log = open("logs.txt", "a")
+create_log = open("script-logs.txt", "a")
 
 #Read from CSV file
 readcsv_file = open("list-devices.csv", "r")
