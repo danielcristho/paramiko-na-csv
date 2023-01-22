@@ -1,5 +1,3 @@
 ip,username,password,port
 172.16.0.1,rtr1,router1,
 172.16.0.2,rtr2,router2,
-172.16.0.3,rtr3,router3,2223
-172.16.0.4,rtr4,router4,

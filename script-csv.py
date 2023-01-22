@@ -1,7 +1,9 @@
 import paramiko
 import time
 import csv
-from datetime import date, datetime
+import os
+import sys
+from datetime import datetime
 
 conn_ssh = paramiko.SSHClient()
 conn_ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
@@ -19,7 +21,8 @@ for device in listcsv_device:
             hostname=device['ip'],
             username=device['username'],
             password=device['password'],
-            port = device['port'] if device['port'] else 22
+            port = device['port'] if device['port'] else 22,
+            look_for_keys=False, allow_agent=False
         )
         print("****************************************************")
         print(f"Succes login to {device['username']}")
@@ -29,7 +32,7 @@ for device in listcsv_device:
         time.sleep(10)
 
         output = conn.recv(65535).decode()
-        file_backup = open(f"backup-config/{device['ip']}.cfg", "w")
+        file_backup = open(f"backup/{device['ip']}.cfg", "w")
         file_backup.write(output)
         file_backup.close()
 
