@@ -24,7 +24,7 @@ for device in listcsv_device:
         )
         conn = conn_ssh.invoke_shell()
         print("****************************************************")
-        print(f"Success login to {device['username']}")
+        print(f"Success login to {device['username'] ['vendor']}")
 
         if device['vendor'] == "cisco":
             conn.send("enable\n")
@@ -55,7 +55,6 @@ for device in listcsv_device:
     except paramiko.ssh_exception.AuthenticationException as message:
         print(f"{message} [{device['ip']}] ")
         create_log.write(f"{message} {datetime.now()}\n")
-        pass
 
     except paramiko.ssh_exception.NoValidConnectionsError as message:
         print(f"{message}")

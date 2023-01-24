@@ -1,4 +1,4 @@
-# Paramiko-NA-CSV
+# Paramiko-Natwork-CSV
 
 Automation script for Cisco & Mikrotik devices. Contains ```CSV``` file as device information.
 
